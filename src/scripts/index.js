@@ -38,7 +38,7 @@ const addElement = (event) => {
   if (event.which === 13 || event.keyCode === 13) {
     createElement();
     notCompletedCases();
-    activeBtn();
+    autoFilterCompleted();
     return false;
   }
   return true;
@@ -158,30 +158,48 @@ const hideBtn = () => {
 };
 ul.addEventListener('change', hideBtn);
 
-/* ####################################   filter  allBtn ########################### */
-const allBtn = (e) => {
+/* ########################### activatedBtn style ########################### */
+let selectedTd;
+
+const activatedBtn = (e) => {
   const target = e.target;
 
-  if (target.className !== 'all') return;
+  if (target.tagName !== 'A') return;
+  document.querySelector('.all').classList.remove('highlight');
+  highlight(target);
+};
 
+const highlight = (node) => {
+  if (selectedTd) {
+    selectedTd.classList.remove('highlight');
+  }
+  selectedTd = node;
+  selectedTd.classList.add('highlight');
+};
+todoApp.addEventListener('click', activatedBtn);
+
+/* ####################################   filter  allBtn ########################### */
+
+const filterAll = () => {
   const elements = document.getElementsByClassName('view__toggle');
 
   for (let i = 0; i < elements.length; i += 1) {
     const element = elements[i];
-
     element.closest('li').classList.remove('hidden');
   }
+};
+
+const allBtn = (e) => {
+const target = e.target;
+if (!target.classList.contains('all')) return;
+filterAll();
 };
 todoApp.addEventListener('click', allBtn);
 
 /* ###########################   filter  activeBtn  ########################### */
-const activeBtn = (e) => {
-  const target = e.target;
 
-  if (target.className !== 'active') return;
-
+const filterActive = () => {
   const elements = document.getElementsByClassName('view__toggle');
-
   for (let i = 0; i < elements.length; i += 1) {
     const element = elements[i];
 
@@ -192,14 +210,26 @@ const activeBtn = (e) => {
     }
   }
 };
-todoApp.addEventListener('click', activeBtn);
 
-/* ###########################   filter completedBtn  ########################### */
-const completedBtn = (e) => {
+const activeBtn = (e) => {
   const target = e.target;
 
-  if (target.className !== 'completed') return;
+  if (target.className !== 'active') return;
+  filterActive();
+};
+todoApp.addEventListener('click', activeBtn);
 
+const autoFilterActive = (e) => {
+  const activeBtn = document.querySelector('.active');
+
+  if (activeBtn.classList.contains('highlight')) filterActive();
+
+};
+
+todoApp.addEventListener('click', autoFilterActive);
+/* ###########################   filter completedBtn  ########################### */
+
+const filterCompleted = () => {
   const elements = document.getElementsByClassName('view__toggle');
 
   for (let i = 0; i < elements.length; i += 1) {
@@ -212,7 +242,23 @@ const completedBtn = (e) => {
     }
   }
 };
+
+const completedBtn = (e) => {
+  const target = e.target;
+
+  if (target.className !== 'completed') return;
+  filterCompleted();
+};
 todoApp.addEventListener('click', completedBtn);
+
+const autoFilterCompleted = (e) => {
+  const completedBtn = document.querySelector('.completed');
+
+  if (completedBtn.classList.contains('highlight')) filterCompleted();
+
+};
+
+todoApp.addEventListener('click', autoFilterCompleted);
 
 /* ########################### hide list ########################### */
 const hideFooter = () => {
@@ -233,25 +279,7 @@ const hideFooter = () => {
 todoApp.addEventListener('click', hideFooter);
 todoApp.addEventListener('keydown', hideFooter);
 
-/* ########################### activatedBtn style ########################### */
-let selectedTd;
 
-const activatedBtn = (e) => {
-  const target = e.target;
-
-  if (target.tagName !== 'A') return;
-  document.querySelector('.all').classList.remove('highlight');
-  highlight(target);
-};
-
-const highlight = (node) => {
-  if (selectedTd) {
-    selectedTd.classList.remove('highlight');
-  }
-  selectedTd = node;
-  selectedTd.classList.add('highlight');
-};
-todoApp.addEventListener('click', activatedBtn);
 
 /* ########################### EditInput ########################### */
 const createEditInput = (e) => {

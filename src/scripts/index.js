@@ -1,8 +1,14 @@
 import '../styles/index.scss';
 const todoApp = document.querySelector('.todoapp');
+/* ########################### LocalStorage ########################### */
+let todos;
+const toLocal = () => {
+  todos = ul.innerHTML;
+  localStorage.setItem('todos', todos);
+};
 
 /* ########################### Add li to todo-list ########################### */
-const newTodo = document.getElementById('new-todo');
+const newTodo = document.querySelector('.header__new-todo');
 const ul = document.getElementsByTagName('ul')[0];
 
 const createElement = () => {
@@ -32,6 +38,7 @@ const createElement = () => {
   const button = document.createElement('button');
   button.className = 'view__destroy';
   div.appendChild(button);
+  toLocal();
 };
 
 const addElement = (event) => {
@@ -98,6 +105,7 @@ const removeElement = (e) => {
 
   ul.removeChild(target.closest('li'));
   notCompletedCases();
+  toLocal();
 };
 ul.addEventListener('click', removeElement);
 
@@ -124,7 +132,7 @@ const notCompletedCases = () => {
     clearСompleted.classList.add('invisible');
   }
 };
-notCompletedCases();
+
 todoApp.addEventListener('change', notCompletedCases);
 
 /* ########################### clean-up button ########################### */
@@ -144,6 +152,8 @@ const clearCompletedBtn = (e) => {
     }
   }
   document.querySelector('.header__toggle-all').checked = false;
+  notCompletedCases();
+  toLocal();
 };
 todoApp.addEventListener('click', clearCompletedBtn);
 
@@ -314,3 +324,7 @@ const keysRemoveEditInput = (e) => {
   }
 };
 document.addEventListener('keydown', keysRemoveEditInput);
+if (localStorage.getItem('todos')) {
+  ul.innerHTML = localStorage.getItem('todos');
+}
+notCompletedCases();

@@ -1,16 +1,24 @@
 import '../styles/index.scss';
 const todoApp = document.querySelector('.todoapp');
+const newTodo = document.querySelector('.header__new-todo');
+const ul = document.getElementsByTagName('ul')[0];
 /* ########################### LocalStorage ########################### */
 let todos;
 const toLocal = () => {
   todos = ul.innerHTML;
   localStorage.setItem('todos', todos);
 };
+document.addEventListener('click', toLocal);
+/* ########################### checkbox ########################### */
+const toggleCheckbox = (e) => {
+  const target = e.target;
 
+  if (target.className != 'view__toggle') return;
+  target.toggleAttribute('checked');
+
+};
+todoApp.addEventListener('click',toggleCheckbox);
 /* ########################### Add li to todo-list ########################### */
-const newTodo = document.querySelector('.header__new-todo');
-const ul = document.getElementsByTagName('ul')[0];
-
 const createElement = () => {
   if (newTodo.value == false) return;
   const li = document.createElement('li');
@@ -310,8 +318,17 @@ const removeEditInput = (e) => {
   const target = e.target;
   const li = target.closest('li');
   if (target.className !== 'le__edit') return;
-  li.querySelector('.view__lable').innerHTML = li.querySelector('.le__edit').value;
+  if (target.innerHTML === '') {
+    li.querySelector('.view__lable').closest('li').remove();
+  } else if (target.innerHTML === ' '){
+    li.querySelector('.view__lable').innerHTML = li.querySelector('.view__lable').innerHTML;
+  } else {
+    li.querySelector('.view__lable').innerHTML = li.querySelector('.le__edit').value;
+  }
   target.remove();
+  hideFooter();
+  notCompletedCases();
+  toLocal();
 };
 
 document.addEventListener('blur', removeEditInput, true);
@@ -328,3 +345,5 @@ if (localStorage.getItem('todos')) {
   ul.innerHTML = localStorage.getItem('todos');
 }
 notCompletedCases();
+hideFooter();
+filterAll();

@@ -318,13 +318,10 @@ const removeEditInput = (e) => {
   const target = e.target;
   const li = target.closest('li');
   if (target.className !== 'le__edit') return;
-  if (target.innerHTML === '') {
-    li.querySelector('.view__lable').closest('li').remove();
-  } else if (target.innerHTML === ' '){
-    li.querySelector('.view__lable').innerHTML = li.querySelector('.view__lable').innerHTML;
-  } else {
-    li.querySelector('.view__lable').innerHTML = li.querySelector('.le__edit').value;
-  }
+  li.querySelector('.view__lable').innerHTML = li.querySelector('.le__edit').value;
+   if (li.querySelector('.view__lable').innerHTML === '') {
+     li.querySelector('.view__lable').closest('li').remove();
+   }
   target.remove();
   hideFooter();
   notCompletedCases();

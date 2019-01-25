@@ -87,11 +87,13 @@ body {
   &__edit {
     border: 1px solid black;
     font-size: 25px;
-    height: 86px;
+    height: 100%;
     left: 50px;
     position: absolute;
     top: 0;
     width: 91%;
+    white-space: normal;
+    padding: 15px;
   }
 }
 

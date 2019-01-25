@@ -304,9 +304,8 @@ const createEditInput = (e) => {
   const target = e.target;
   if (!target.closest('.view__lable')) return;
   target.closest('li').querySelector('.view__toggle').classList.add('invisible');
-  const input = document.createElement('input');
+  const input = document.createElement('textarea');
   input.className = 'le__edit';
-  input.type = 'text';
   input.value = target.closest('li').querySelector('.view__lable').innerHTML;
   target.closest('li').appendChild(input);
   input.focus();

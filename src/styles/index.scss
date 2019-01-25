@@ -76,6 +76,7 @@ body {
     margin-left: 5px;
     outline: none;
     padding: 16px 16px 16px 0;
+    width: 0;
   }
 }
 
@@ -90,7 +91,7 @@ body {
     left: 50px;
     position: absolute;
     top: 0;
-    width: 500px;
+    width: 91%;
   }
 }
 
@@ -98,8 +99,8 @@ body {
   align-items: center;
   border-bottom: 1px solid lightgray;
   display: flex;
-  height: 86px;
   justify-content: space-between;
+  min-height: 86px;
   width: 100%;
 
   &:hover .view__destroy {
@@ -107,9 +108,11 @@ body {
   }
 
   &__toggle {
+    align-self: flex-start;
     color: green;
     height: 40px;
     margin-left: 10px;
+    margin-top: 24px;
     width: 40px;
 
     &:checked ~ .view__lable {
@@ -123,13 +126,16 @@ body {
     flex: 1 1;
     font-size: 24px;
     padding: 15px;
+    word-break: break-all;
   }
 
   &__destroy {
+    align-self: flex-end;
     background-color: transparent;
     border: none;
     height: 40px;
-    margin: auto 20px auto 0;
+    margin-bottom: 24px;
+    margin-right: 20px;
     opacity: 0.5;
     visibility: hidden;
     width: 40px;
@@ -157,9 +163,11 @@ body {
 .footer {
   border-top: 1px solid #e6e6e6;
   color: #777777;
-  flex: 0 1 41px;
+  flex: 0 1;
+  min-width: 200px;
   padding: 10px 15px;
   position: relative;
+  text-align: center;
 
   &__todo-count {
     float: left;
@@ -189,9 +197,10 @@ body {
 }
 
 .filters {
-  left: 30%;
+  left: 0;
   list-style: none;
   position: absolute;
+  right: 0;
 }
 
 .li {

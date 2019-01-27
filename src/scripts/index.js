@@ -12,15 +12,13 @@ document.addEventListener('click', toLocal);
 /* ########################### checkbox ########################### */
 const toggleCheckbox = (e) => {
   const target = e.target;
-
-  if (target.className != 'view__toggle') return;
+  if (target.className !== 'view__toggle') return;
   target.toggleAttribute('checked');
-
 };
-todoApp.addEventListener('click',toggleCheckbox);
+todoApp.addEventListener('click', toggleCheckbox);
 /* ########################### Add li to todo-list ########################### */
 const createElement = () => {
-  if (newTodo.value == false) return;
+  if (newTodo.value.trim() === '') return;
   const li = document.createElement('li');
   const createId = Math.random().toString(36).substr(2, 16);
   li.setAttribute('data-id', createId);
@@ -37,7 +35,7 @@ const createElement = () => {
   div.appendChild(input);
 
   const label = document.createElement('label');
-  label.innerHTML = newTodo.value;
+  label.innerHTML = newTodo.value.trim();
   newTodo.value = '';
   label.className = 'view__lable';
   div.appendChild(label);
@@ -64,8 +62,13 @@ window.addEventListener('resize', createElement);
 
 /* ########################### activate checkbox ########################### */
 const activateCheckbox = () => {
+  const setAllCheckboxes = (where, value) => {
+    const checkboxes = where.querySelectorAll('input[type="checkbox"]');
+    Array.prototype.forEach.call(checkboxes, (item) => {
+      item.checked = !!value;
+    });
+  };
   const checkboxes = document.querySelectorAll('.todoapp');
-
   Array.prototype.forEach.call(checkboxes, (item) => {
     const count = item.getElementsByClassName('view__toggle').length;
     let currentCount = 0;
@@ -94,28 +97,9 @@ const activateCheckbox = () => {
       }
     }, false);
   });
-
-  const setAllCheckboxes = (where, value) => {
-    const checkboxes = where.querySelectorAll('input[type="checkbox"]');
-    Array.prototype.forEach.call(checkboxes, (item) => {
-      item.checked = !!value;
-    });
-  };
 };
 
 activateCheckbox();
-
-/* ########################### Remove li in todo-list ########################### */
-const removeElement = (e) => {
-  const target = e.target;
-
-  if (target.className !== 'view__destroy') return;
-
-  ul.removeChild(target.closest('li'));
-  notCompletedCases();
-  toLocal();
-};
-ul.addEventListener('click', removeElement);
 
 /* ########################### notCompletedCases value ########################### */
 const notCompletedCases = () => {
@@ -142,16 +126,24 @@ const notCompletedCases = () => {
 };
 
 todoApp.addEventListener('change', notCompletedCases);
+/* ########################### Remove li in todo-list ########################### */
+const removeElement = (e) => {
+  const target = e.target;
+
+  if (target.className !== 'view__destroy') return;
+
+  ul.removeChild(target.closest('li'));
+  notCompletedCases();
+  toLocal();
+};
+ul.addEventListener('click', removeElement);
 
 /* ########################### clean-up button ########################### */
 const clearCompletedBtn = (e) => {
   const target = e.target;
-
   if (target.className !== 'footer__clear-completed') return;
-
   const elements = ul.getElementsByTagName('input');
   let i = elements.length - 1;
-
 
   for (i; i >= 0; i -= 1) {
     const element = elements[i];
@@ -166,18 +158,25 @@ const clearCompletedBtn = (e) => {
 todoApp.addEventListener('click', clearCompletedBtn);
 
 const hideBtn = () => {
-  const clearCompletedBtn = document.querySelector('.footer__clear-completed');
+  const footerCompleted = document.querySelector('.footer__clear-completed');
   const ulLength = ul.getElementsByTagName('li').length;
   if (ulLength === 0) {
-    clearCompletedBtn.classList.add('invisible');
+    footerCompleted.classList.add('invisible');
   } else {
-    clearCompletedBtn.classList.remove('invisible');
+    footerCompleted.classList.remove('invisible');
   }
 };
 ul.addEventListener('change', hideBtn);
 
 /* ########################### activatedBtn style ########################### */
 let selectedTd;
+const highlight = (node) => {
+  if (selectedTd) {
+    selectedTd.classList.remove('highlight');
+  }
+  selectedTd = node;
+  selectedTd.classList.add('highlight');
+};
 
 const activatedBtn = (e) => {
   const target = e.target;
@@ -187,13 +186,7 @@ const activatedBtn = (e) => {
   highlight(target);
 };
 
-const highlight = (node) => {
-  if (selectedTd) {
-    selectedTd.classList.remove('highlight');
-  }
-  selectedTd = node;
-  selectedTd.classList.add('highlight');
-};
+
 todoApp.addEventListener('click', activatedBtn);
 
 /* ####################################   filter  allBtn ########################### */
@@ -208,9 +201,9 @@ const filterAll = () => {
 };
 
 const allBtn = (e) => {
-const target = e.target;
-if (!target.classList.contains('all')) return;
-filterAll();
+  const target = e.target;
+  if (!target.classList.contains('all')) return;
+  filterAll();
 };
 todoApp.addEventListener('click', allBtn);
 
@@ -237,11 +230,9 @@ const activeBtn = (e) => {
 };
 todoApp.addEventListener('click', activeBtn);
 
-const autoFilterActive = (e) => {
-  const activeBtn = document.querySelector('.active');
-
-  if (activeBtn.classList.contains('highlight')) filterActive();
-
+const autoFilterActive = () => {
+  const active = document.querySelector('.active');
+  if (active.classList.contains('highlight')) filterActive();
 };
 
 todoApp.addEventListener('click', autoFilterActive);
@@ -269,11 +260,9 @@ const completedBtn = (e) => {
 };
 todoApp.addEventListener('click', completedBtn);
 
-const autoFilterCompleted = (e) => {
-  const completedBtn = document.querySelector('.completed');
-
-  if (completedBtn.classList.contains('highlight')) filterCompleted();
-
+const autoFilterCompleted = () => {
+  const completed = document.querySelector('.completed');
+  if (completed.classList.contains('highlight')) filterCompleted();
 };
 
 todoApp.addEventListener('click', autoFilterCompleted);
@@ -297,8 +286,6 @@ const hideFooter = () => {
 todoApp.addEventListener('click', hideFooter);
 todoApp.addEventListener('keydown', hideFooter);
 
-
-
 /* ########################### EditInput ########################### */
 const createEditInput = (e) => {
   const target = e.target;
@@ -319,9 +306,9 @@ const removeEditInput = (e) => {
   if (target.className !== 'le__edit') return;
   target.closest('li').querySelector('.view__toggle').classList.remove('invisible');
   li.querySelector('.view__lable').innerHTML = li.querySelector('.le__edit').value.trim();
-   if (li.querySelector('.view__lable').innerHTML === '') {
-     li.querySelector('.view__lable').closest('li').remove();
-   }
+  if (li.querySelector('.view__lable').innerHTML === '') {
+    li.querySelector('.view__lable').closest('li').remove();
+  }
   target.remove();
   hideFooter();
   notCompletedCases();

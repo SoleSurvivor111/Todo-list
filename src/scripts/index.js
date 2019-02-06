@@ -295,6 +295,7 @@ const createEditInput = (e) => {
   const target = e.target;
   if (!target.closest('.view__lable')) return;
   target.closest('li').querySelector('.view__toggle').classList.add('invisible');
+  target.closest('li').querySelector('.view__checkbox').classList.add('invisible');
   const input = document.createElement('textarea');
   input.className = 'le__edit';
   input.value = target.closest('li').querySelector('.view__lable').innerHTML;
@@ -309,6 +310,7 @@ const removeEditInput = (e) => {
   const li = target.closest('li');
   if (target.className !== 'le__edit') return;
   target.closest('li').querySelector('.view__toggle').classList.remove('invisible');
+  target.closest('li').querySelector('.view__checkbox').classList.remove('invisible');
   li.querySelector('.view__lable').innerHTML = li.querySelector('.le__edit').value.trim();
   if (li.querySelector('.view__lable').innerHTML === '') {
     li.querySelector('.view__lable').closest('li').remove();

@@ -34,6 +34,10 @@ const createElement = () => {
   input.type = 'checkbox';
   div.appendChild(input);
 
+  const checkbox = document.createElement('label');
+  checkbox.className = 'view__checkbox';
+  div.appendChild(checkbox);
+
   const label = document.createElement('label');
   label.innerHTML = newTodo.value.trim();
   newTodo.value = '';

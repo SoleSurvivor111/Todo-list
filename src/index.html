@@ -10,39 +10,39 @@
 <body>
 
   <body>
-    <section class="todoapp">
-      <div class="todos">
-        <h1 class="todos__h1">TODOS</h1>
-      </div>
-      <header class="header">
-        <input id="toggle-all" class="header__toggle-all" type="checkbox">
-        <label for="toggle-all" class='header__label'></label>
-        <input class="header__new-todo" placeholder="What needs to be done?" autofocus>
-      </header>
+    <div class="todos">
+      <h1 class="todos__h1">TODOS</h1>
+    </div>
+    <section class="todoapp js-todoapp">
 
+      <header class="header">
+        <input id="toggle-all" class="header__toggle-all js-toggle-all" type="checkbox">
+        <label for="toggle-all" class='header__label js-label'></label>
+        <input class="header__new-todo js-new-todo" placeholder="What needs to be done?" autofocus>
+      </header>
 
       <section class="main">
 
-        <ul class="todo-list">
+        <ul class="todo-list js-todo-list">
 
         </ul>
       </section>
 
 
-      <footer class="footer">
-        <span class="footer__todo-count"></span>
+      <footer class="footer js-footer">
+        <span class="footer__todo-count js-todo-count"></span>
         <ul class="filters">
           <li class='li'>
-            <a href="#/" class="all highlight">All</a>
+            <a href="#/" class="all js-all highlight">All</a>
           </li>
           <li class='li'>
-            <a href="#/active" class='active'>Active</a>
+            <a href="#/active" class='active js-active'>Active</a>
           </li>
           <li class='li'>
-            <a href="#/completed" class="completed">Completed</a>
+            <a href="#/completed" class="completed js-completed">Completed</a>
           </li>
         </ul>
-        <button class="footer__clear-completed">Clear completed</button>
+        <button class="footer__clear-completed js-clear-completed">Clear completed</button>
       </footer>
 
     </section>

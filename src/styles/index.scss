@@ -42,9 +42,11 @@ body {
   background-size: cover;
   border: 1px solid black;
   height: 198px;
-  left: 22%;
+  left: 0;
+  margin: 0 auto;
   position: absolute;
-  top: -200px;
+  right: 0;
+  top: 0;
   width: 306px;
 
   &__h1 {
@@ -265,9 +267,7 @@ body {
 }
 
 @media only screen and (max-width: 430px) {
-  .todos {
-    left: 10%;
-  }
+
   .footer {
     flex: 0 1 71px;
   }

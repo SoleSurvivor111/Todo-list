@@ -2,8 +2,7 @@ import '../styles/index.scss';
 const todoApp = document.querySelector('.js-todoapp');
 const newTodo = document.querySelector('.js-new-todo');
 const ul = document.getElementsByClassName('js-todo-list')[0];
-const enterKey = 13;
-const escapeKey = 27;
+
 /* ########################### LocalStorage ########################### */
 let todos;
 const toLocal = () => {
@@ -19,41 +18,36 @@ const toggleCheckbox = (e) => {
 };
 todoApp.addEventListener('click', toggleCheckbox);
 /* ########################### Add li to todo-list ########################### */
+const newElement = (tag, nameClass, parent) => {
+	const el = document.createElement(tag);
+  el.className = nameClass;
+  parent.appendChild(el);
+  return el;
+};
 const createElement = () => {
   if (newTodo.value.trim() === '') return;
-  const li = document.createElement('li');
+  const li = newElement('li', 'le js-le', ul);
   const createId = Math.random().toString(36).substr(2, 16);
   li.setAttribute('data-id', createId);
-  li.className = 'le js-le';
-  ul.appendChild(li);
 
-  const div = document.createElement('div');
-  div.className = 'view';
-  li.appendChild(div);
+  const div = newElement('div', 'view', li);
 
-  const input = document.createElement('input');
-  input.className = 'view__toggle js-toggle';
+  const input = newElement('input', 'view__toggle js-toggle', div);
   input.type = 'checkbox';
-  div.appendChild(input);
 
-  const checkbox = document.createElement('label');
-  checkbox.className = 'view__checkbox js-checkbox';
-  div.appendChild(checkbox);
+  const checkbox = newElement('label', 'view__checkbox js-checkbox', div);
 
-  const label = document.createElement('label');
+  const label = newElement('label', 'view__lable js-lable', div);
   label.innerHTML = newTodo.value.trim();
   newTodo.value = '';
-  label.className = 'view__lable js-lable';
-  div.appendChild(label);
 
-
-  const button = document.createElement('button');
-  button.className = 'view__destroy js-destroy';
-  div.appendChild(button);
+  const button = newElement('button', 'view__destroy js-destroy', div);
+  button.type = 'button';
   toLocal();
 };
 
 const addElement = (event) => {
+  const enterKey = 13;
   if (event.which === enterKey || event.keyCode === enterKey) {
     createElement();
     notCompletedCases();
@@ -135,9 +129,7 @@ todoApp.addEventListener('change', notCompletedCases);
 /* ########################### Remove li in todo-list ########################### */
 const removeElement = (e) => {
   const target = e.target;
-
   if (!target.classList.contains('js-destroy')) return;
-
   ul.removeChild(target.closest('.js-le'));
   notCompletedCases();
   toLocal();
@@ -295,13 +287,12 @@ todoApp.addEventListener('keydown', hideFooter);
 /* ########################### EditInput ########################### */
 const createEditInput = (e) => {
   const target = e.target;
+  const le = target.closest('.js-le');
   if (!target.closest('.js-lable')) return;
-  target.closest('.js-le').querySelector('.js-toggle').classList.add('invisible');
-  target.closest('.js-le').querySelector('.js-checkbox').classList.add('invisible');
-  const input = document.createElement('textarea');
-  input.className = 'le__edit js-edit';
-  input.value = target.closest('.js-le').querySelector('.js-lable').innerHTML;
-  target.closest('.js-le').appendChild(input);
+  le.querySelector('.js-toggle').classList.add('invisible');
+  le.querySelector('.js-checkbox').classList.add('invisible');
+  const input = newElement('textarea', 'le__edit js-edit', le);
+  input.value = le.querySelector('.js-lable').innerHTML;
   input.focus();
 };
 todoApp.addEventListener('dblclick', createEditInput);
@@ -309,13 +300,13 @@ todoApp.addEventListener('dblclick', createEditInput);
 
 const removeEditInput = (e) => {
   const target = e.target;
-  const li = target.closest('.js-le');
+  const le = target.closest('.js-le');
   if (!target.classList.contains('js-edit')) return;
-  target.closest('.js-le').querySelector('.js-toggle').classList.remove('invisible');
-  target.closest('.js-le').querySelector('.js-checkbox').classList.remove('invisible');
-  li.querySelector('.js-lable').innerHTML = li.querySelector('.js-edit').value.trim();
-  if (li.querySelector('.js-lable').innerHTML === '') {
-    li.querySelector('.js-lable').closest('.js-le').remove();
+  le.querySelector('.js-toggle').classList.remove('invisible');
+  le.querySelector('.js-checkbox').classList.remove('invisible');
+  le.querySelector('.js-lable').innerHTML = le.querySelector('.js-edit').value.trim();
+  if (le.querySelector('.js-lable').innerHTML === '') {
+    le.querySelector('.js-lable').closest('.js-le').remove();
   }
   target.remove();
   hideFooter();
@@ -327,7 +318,9 @@ document.addEventListener('blur', removeEditInput, true);
 
 const keysRemoveEditInput = (e) => {
   const liEdit = document.activeElement;
-  if (!liEdit.classList.contains('.js-edit')) return;
+  if (!liEdit.classList.contains('js-edit')) return;
+  const enterKey = 13;
+  const escapeKey = 27;
   if (e.which === enterKey || e.keyCode === enterKey || e.which === escapeKey) {
     liEdit.blur();
   }

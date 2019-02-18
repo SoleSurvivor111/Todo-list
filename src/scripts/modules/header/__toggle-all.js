@@ -32,6 +32,20 @@ const activateCheckbox = () => {
             item.getElementsByClassName('js-toggle-all')[0].checked = false;
           }
         }
+        const elements = document.getElementsByClassName('js-toggle');
+        let result = 0;
+        for (let i = 0; i < elements.length; i += 1) {
+          const element = elements[i];
+          if (element.checked) {
+            result += 1;
+          }
+          
+          if (result === elements.length) {
+            document.querySelector('.js-toggle-all').checked = true;
+          } else {
+            document.querySelector('.js-toggle-all').checked = false;
+          }
+        }
       }
     }, false);
   });

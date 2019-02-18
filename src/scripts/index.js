@@ -2,6 +2,8 @@ import '../styles/index.scss';
 import {notCompletedCases} from './modules/footer/__todo-count.js';
 import {hideFooter} from './modules/footer/footer.js';
 import {filterAll} from './modules/filters/__all.js';
+import {toLocal} from './modules/LocalStage.js';
+import {createList} from './modules/LocalStage.js';
 const ul = document.getElementsByClassName('js-todo-list')[0];
 
 
@@ -21,7 +23,8 @@ import './modules/view/__lable.js';
 
 
 if (localStorage.getItem('js-todos')) {
-  ul.innerHTML = localStorage.getItem('js-todos');
+  let src = JSON.parse(localStorage.getItem('js-todos'));
+  createList(src);
 }
 notCompletedCases();
 hideFooter();
